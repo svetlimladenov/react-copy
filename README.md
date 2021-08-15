@@ -23,4 +23,4 @@ Serve the project directory by
 live-server .
 ```
 
-Browse [localhost:8080](localhost:8080)
+Browse [localhost:8080](http://localhost:8080/)
