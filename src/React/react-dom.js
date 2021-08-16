@@ -4,7 +4,7 @@ const ReactDOM = {
       if (typeof child === "string") {
         return child;
       } else {
-        return this.createHtml(child);
+        return this._createHtml(child);
       }
     });
     return res;
@@ -15,18 +15,18 @@ const ReactDOM = {
     domNode.append(...childrenNodes); // the text content of the element
     return domNode;
   },
-  createHtml(element) {
-    if (typeof element.type !== "function") {
+  _createHtml(element) {
+    if (typeof element.type === "string") { // E.g. 'div', 'span' ...
       return this._createDOMElement(element);
     }
 
     const component = new element.type(element.props);
-    const rendered = component.render();
+    const renderedElement = component.render();
 
-    return this.createHtml(rendered);
+    return this._createHtml(renderedElement); // recursive call
   },
   render(element, where) {
-    const result = this.createHtml(element);
+    const result = this._createHtml(element);
     where.appendChild(result);
   },
 };
