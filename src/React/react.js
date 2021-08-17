@@ -1,10 +1,10 @@
 const React = {
   createElement(type, props, ...children) {
-    const returnProps = Object.assign({}, props);
-    returnProps.children = children;
+    const properties = Object.assign({}, props);
+    properties.children = children;
     return {
       type: type,
-      props: returnProps,
+      props: properties,
     };
   },
 };

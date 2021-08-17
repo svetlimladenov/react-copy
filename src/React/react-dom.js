@@ -5,7 +5,7 @@ const ReactDOM = {
         // should fix this
         return child;
       } else {
-        return this.createHtml(child);
+        return this.generateDOMNodes(child);
       }
     });
     return res;
@@ -22,7 +22,7 @@ const ReactDOM = {
     domNode.append(...childrenNodes); // the text content of the element
     return domNode;
   },
-  createHtml(element, container) {
+  generateDOMNodes(element, container) {
     if (typeof element.type === "string") {
       // E.g. 'div', 'span' ...
       return this.createDOMElement(element);
@@ -45,11 +45,11 @@ const ReactDOM = {
 
     const renderedElement = component.render();
 
-    return this.createHtml(renderedElement); // recursive call
+    return this.generateDOMNodes(renderedElement); // recursive call
   },
   render(element, container) {
     removeChildren(container);
-    const renderedHtml = this.createHtml(element, container);
+    const renderedHtml = this.generateDOMNodes(element, container);
     container.appendChild(renderedHtml);
   },
 };
