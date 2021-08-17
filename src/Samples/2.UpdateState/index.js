@@ -10,18 +10,12 @@ class Counter extends React.Component {
   }
   render() {
     return React.createElement(
-      "div",
-      null,
-      "Hi there ",
-      React.createElement(
-        "button",
-        {
-          onClick: () => {
-            this.setState({ counter: this.state.counter + 1 });
-          },
+      "button",
+      {
+        onClick: () => {
+          this.setState({ counter: this.state.counter + 1 });
         },
-        "Click me"
-      ),
+      },
       this.state.counter
     );
   }
