@@ -16,10 +16,10 @@ class Component {
 
   /**
    * When called it triggers a re-render
-   * @param obj The new state
+   * @param newState The new state
    */
-  setState(obj) {
-    this.state = obj;
+  setState(newState) {
+    this.state = Object.assign(this.state, newState); // shallow merge
     this.rerender(React.createElement(this, this.props));
   }
 
