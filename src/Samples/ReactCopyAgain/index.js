@@ -2,12 +2,22 @@ const React = {
   createElement(type, props, ...children) {
     const propsWithChildren = {};
     if (children.length > 0) {
-      Object.assign(propsWithChildren, { children });
+      Object.assign(propsWithChildren, props, { children });
     }
     return {
       type,
       props: propsWithChildren,
     };
+  },
+};
+
+const properties = {
+  className: (domElement, value) => {
+    const classes = value.split(" ");
+    domElement.classList.add(...classes);
+  },
+  onClick: (domElement, callback) => {
+    domElement.addEventListener("click", callback);
   },
 };
 
@@ -29,16 +39,56 @@ const ReactDOM = {
   },
   createDomElement(element) {
     const domElement = document.createElement(element.type);
-    domElement.append(element.props.children);
+
+    if (!element.props.children) {
+      return domElement;
+    }
+
+    const createChild = (child) => {
+      if (typeof child === "string") {
+        return child;
+      } else {
+        return this.convertReactElementToDomElement(child);
+      }
+    };
+
+    Object.keys(element.props)
+      .filter((key) => key !== "children")
+      .map((key) => {
+        if (properties[key]) {
+          properties[key](domElement, element.props[key]);
+        }
+      });
+
+    if (Array.isArray(element.props.children)) {
+      const children = element.props.children.map(createChild);
+      domElement.append(...children);
+    } else {
+      const child = createChild(element.props.children);
+      domElement.append(child);
+    }
     return domElement;
   },
 };
 
-function Button() {
-  return React.createElement("button", {}, "Click me");
+function App() {
+  return /*#__PURE__*/ React.createElement(
+    "div",
+    null,
+    /*#__PURE__*/ React.createElement("h1", null, "Super cool"),
+    /*#__PURE__*/ React.createElement(
+      "button",
+      {
+        className: "btn",
+        onClick: () => {
+          console.log("test");
+        },
+      },
+      "Whats up ?"
+    )
+  );
 }
 
-const element = React.createElement("div", {}, "hello there", "hi");
-const btn = React.createElement(Button, null);
+const app = React.createElement(App, {});
 
-ReactDOM.render(btn, document.getElementById("root"));
+ReactDOM.render(app, document.getElementById("root"));
